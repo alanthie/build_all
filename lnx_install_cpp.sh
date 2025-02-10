@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # -------------------------------------------------------
+# lnx_install_cpp.sh
+#
 # This will build all my encryption software for Linux
 # You can rerun it, and will rebuild the changed parts
 # All dependencies are automatically downloaded
