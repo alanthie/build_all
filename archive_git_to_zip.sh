@@ -58,4 +58,26 @@ if [ -d ~/dev/NanoLog ]; then
 	git archive --format=zip --output ~/dev_zip/NanoLog.zip master -v
 fi
 
+exit
+
+# -------------------------------------------------------
+# Extra
+#
+# Change the script for your need
+# Consolidate all archives
+# Backup it to a NAS that has ftp enabled
+# Change user, pwd, ip
+# Change remote path share/data/alpc/bck/
+# Change local path /home/alain/tmp/
+# Install lftp
+# -------------------------------------------------------
+dir="[$(date +%Y%m%d_%H%M%S)]/"
+
+mkdir /home/alain/tmp/${dir}
+tar czvf /home/alain/tmp/${dir}/dev_zip.tar.gz     /home/alain/dev_zip 2>/dev/null
+
+# NAS
+lftp -e "open -u user,pwd ftp://ip; mkdir share/data/alpc/bck/\"${dir}\" ; exit"
+lftp -e "open -u user,pwd ftp://ip; put -O share/data/alpc/bck/\"${dir}\" /home/alain/tmp/\"${dir}\"/dev_zip.tar.gz ; exit"
+
 
