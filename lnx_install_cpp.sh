@@ -9,12 +9,13 @@
 # All C++ tools are automatically downloaded
 # I often re-install many Linux distros and run this script
 # 
-# Projects to build:
+# Projects being build:
 # https://github.com/alanthie/Encryptions
 # https://github.com/alanthie/cryptochat2
 #
 # SET FOLDER where git repository are downloaded
 # SET FOLDER where packages (binaries) are output
+# SET BUILDTYPE
 # 
 # Update your Linux first
 # sudo apt update
@@ -27,13 +28,22 @@ DISTRO="${ID}_${VERSION_ID}"
 # -------------------------------------------------------
 # SET FOLDER where git repository are downloaded
 # SET FOLDER where packages (binaries) are output
+# SET BUILDTYPE
 # -------------------------------------------------------
+#BUILDTYPE=Debug
+#BUILDTYPElowercase=debug
+BUILDTYPE=Release
+BUILDTYPElowercase=release
+
 FOLDER="/home/user/dev"
-FOLDERPKG="/home/user/dev/build_all/cryptoal/$DISTRO"
-mkdir /home/user/dev/build_all/cryptoal
+FOLDERPKG="${FOLDER}/build_all/cryptoal/$DISTRO/${BUILDTYPElowercase}"
+mkdir "${FOLDER}/build_all/cryptoal"
+mkdir "${FOLDER}/build_all/cryptoal/$DISTRO"
 
 echo "GIT Directory ${FOLDER}"
 echo "GIT Directory ${FOLDERPKG}"
+echo "BUILDTYPE ${BUILDTYPE}"
+
 
 function isinstalled()
 {
@@ -130,14 +140,14 @@ fi
 if [ -d "${FOLDER}/notcurses/build" ]; then
 	echo "Directory already exist ${FOLDER}/notcurses/build ..."
 	cd "${FOLDER}/notcurses/build"
-	cmake ..  -DCMAKE_BUILD_TYPE=Release
+	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
 	make
 	sudo make install
 else
 	cd "${FOLDER}/notcurses"
 	mkdir build
 	cd build
-	cmake ..  -DCMAKE_BUILD_TYPE=Release
+	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
 	make
 	# REQUIRE later to find *.h
 	sudo make install
@@ -179,13 +189,13 @@ fi
 if [ -d "${FOLDER}/libevent/build" ]; then
 	echo "Directory already exist ${FOLDER}/libevent/build ..."
 	cd "${FOLDER}/libevent/build"
-	cmake ..  -DCMAKE_BUILD_TYPE=Release
+	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
 	make
 else
 	cd "${FOLDER}/libevent"
 	mkdir build
 	cd build
-	cmake .. -DCMAKE_BUILD_TYPE=Release
+	cmake .. -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
 	make
 fi
 
@@ -214,13 +224,13 @@ fi
 if [ -d "${FOLDER}/cryptochat2/build" ]; then
 	echo "Directory already exist ${FOLDER}/cryptochat2/build ..."
 	cd "${FOLDER}/cryptochat2/build"
-	cmake ..  -DCMAKE_BUILD_TYPE=Release
+	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
 	make
 else
 	cd "${FOLDER}/cryptochat2"
 	mkdir build
 	cd build
-	cmake .. -DCMAKE_BUILD_TYPE=Release
+	cmake .. -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
 	make
 fi
 
@@ -237,14 +247,20 @@ fi
 if [ -f "${FOLDER}/ntl/src/ntl.a" ]; then
 	echo "File already exist ${FOLDER}/ntl/src/ntl.a ..."
 	cd "${FOLDER}/ntl/src"
-	export CFLAGS="-O2"
-	export CXXFLAGS="-O2"
+	if [ "${BUILDTYPE}" = Release ] 
+	then
+		export CFLAGS="-O2"
+		export CXXFLAGS="-O2"
+	fi
 	make
 	sudo make install
 else
 	cd "${FOLDER}/ntl/src"
-	export CFLAGS="-O2"
-	export CXXFLAGS="-O2"
+	if [ "${BUILDTYPE}" = Release ] 
+	then
+		export CFLAGS="-O2"
+		export CXXFLAGS="-O2"
+	fi
 	./configure 
 	make
 	# REQUIRE for Encryptions to find NTL/*.h
@@ -264,13 +280,13 @@ fi
 if [ -d "${FOLDER}/Encryptions/build" ]; then
 	echo "Directory already exist ${FOLDER}/Encryptions/build ..."
 	cd "${FOLDER}/Encryptions/build"
-	cmake .. -DCMAKE_BUILD_TYPE=Release
+	cmake .. -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
 	make
 else
 	cd "${FOLDER}/Encryptions"
 	mkdir build
 	cd build
-	cmake ..  -DCMAKE_BUILD_TYPE=Release
+	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
 	make
 fi
 
@@ -293,5 +309,6 @@ cp -r "${FOLDER}/cryptochat2/mediaviewer/prj/res"  "${FOLDERPKG}/"
 mkdir "${FOLDERPKG}/doc"
 cp "${FOLDER}/cryptochat2/release_readme.txt"      "${FOLDERPKG}/doc/chat_readme.txt"
 cp "${FOLDER}/Encryptions/README.md"               "${FOLDERPKG}/doc/crypto_readme.md.txt"
+
 exit
 
