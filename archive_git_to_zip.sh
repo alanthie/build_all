@@ -13,6 +13,16 @@ if [ -d ~/dev/config_netw ]; then
 	git archive --format=zip --output ~/dev_zip/config_netw.zip master -v
 fi
 
+cd ~/dev/build_all
+status=$?
+if [ $status -eq 0 ]
+then
+	echo "archiving build_all.zip"
+	git archive --format=zip --output ~/dev_zip/build_all.zip main -v
+else
+	echo "cannot - cd ~/dev/build_all"
+fi
+
 if [ -d ~/dev/cryptochat2 ]; then
 	cd ~/dev/cryptochat2
 	git archive --format=zip --output ~/dev_zip/cryptochat2.zip main -v
