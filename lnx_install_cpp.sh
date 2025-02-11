@@ -13,6 +13,7 @@
 # https://github.com/alanthie/cryptochat2
 #
 # SET FOLDER where git repository are downloaded
+# SET FOLDER where packages (binaries) are output
 # 
 # Update your Linux first
 # sudo apt update
@@ -21,14 +22,15 @@
 
 # -------------------------------------------------------
 # SET FOLDER where git repository are downloaded
+# SET FOLDER where packages (binaries) are output
 # -------------------------------------------------------
-FOLDER="/home/alain/dev"
+FOLDER="/home/user/dev"
+FOLDERPKG="/home/user/cryptoal"
 echo "GIT Directory ${FOLDER}"
-
+echo "GIT Directory ${FOLDERPKG}"
 
 function isinstalled()
 {
-
 	status="$(dpkg-query -W --showformat='${db:Status-Status}' "$1" 2>&1)"
 	if [ ! $? = 0 ] || [ ! "$status" = installed ] 
 	then
@@ -263,4 +265,23 @@ else
 fi
 
 
+# -------------------------------------------------------
+# Copy programs
+# -------------------------------------------------------
+if [ -d "${FOLDERPKG}" ]; then
+	echo "Directory already exist ${FOLDERPKG} deleting..."
+	rm -r "${FOLDERPKG}"
+fi
+mkdir "${FOLDERPKG}"
+cp "${FOLDER}/Encryptions/build/src/crypto" "${FOLDERPKG}/"
+cp "${FOLDER}/Encryptions/build/src/qa/qa"  "${FOLDERPKG}/"
+cp "${FOLDER}/cryptochat2/build/lnx_chatcli/lnx_chatcli" "${FOLDERPKG}/"
+cp "${FOLDER}/cryptochat2/build/lnx_chatsrv/lnx_chatsrv" "${FOLDERPKG}/"
+cp "${FOLDER}/cryptochat2/build/mediaviewer/mediaviewer" "${FOLDERPKG}/"
+mkdir "${FOLDERPKG}/res"
+cp -r "${FOLDER}/cryptochat2/mediaviewer/prj/res"  "${FOLDERPKG}/"
+mkdir "${FOLDERPKG}/doc"
+cp "${FOLDER}/cryptochat2/release_readme.txt"      "${FOLDERPKG}/doc/chat_readme.txt"
+cp "${FOLDER}/Encryptions/README.md"               "${FOLDERPKG}/doc/crypto_readme.md.txt"
+exit
 
