@@ -252,8 +252,15 @@ if [ -f "${FOLDER}/ntl/src/ntl.a" ]; then
 		export CFLAGS="-O2"
 		export CXXFLAGS="-O2"
 	fi
+	# TODO - Detect if we should redo ./configure
+	#./configure
 	make
 	sudo make install
+	if [ "${BUILDTYPE}" = Release ] 
+	then
+		unset CFLAGS
+		unset CXXFLAGS
+	fi
 else
 	cd "${FOLDER}/ntl/src"
 	if [ "${BUILDTYPE}" = Release ] 
@@ -265,6 +272,11 @@ else
 	make
 	# REQUIRE for Encryptions to find NTL/*.h
 	sudo make install
+	if [ "${BUILDTYPE}" = Release ] 
+	then
+		unset CFLAGS
+		unset CXXFLAGS
+	fi
 fi
 
 
