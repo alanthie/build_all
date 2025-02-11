@@ -22,3 +22,28 @@ build all my encryption software
 # -------------------------------------------------------
 </pre>
 
+
+Packages produced on Qubes_OS/Debian:
+<pre>
+../cryptoal
+└── debian_12
+    ├── crypto
+    ├── doc
+    │   ├── chat_readme.txt
+    │   └── crypto_readme.md.txt
+    ├── lnx_chatcli
+    ├── lnx_chatsrv
+    ├── mediaviewer
+    ├── qa
+    └── res
+        ├── fonts
+        │   ├── arial.ttf
+        │   └── _fail_.ttf
+        ├── sfx
+        │   └── _fail_.ogg
+        └── txrs
+            └── _fail_.png
+
+7 directories, 11 files
+</pre>
+
