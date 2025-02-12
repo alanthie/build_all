@@ -35,7 +35,8 @@ DISTRO="${ID}_${VERSION_ID}"
 BUILDTYPE=Release
 BUILDTYPElowercase=release
 
-FOLDER="/home/user/dev"
+#FOLDER="/home/user/dev"
+FOLDER="/home/alain/dev"
 FOLDERPKG="${FOLDER}/build_all/cryptoal/$DISTRO/${BUILDTYPElowercase}"
 mkdir "${FOLDER}/build_all/cryptoal"
 mkdir "${FOLDER}/build_all/cryptoal/$DISTRO"
