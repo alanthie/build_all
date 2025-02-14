@@ -44,6 +44,7 @@ mkdir "${FOLDER}/build_all/cryptoal/$DISTRO"
 echo "GIT Directory ${FOLDER}"
 echo "GIT Directory ${FOLDERPKG}"
 echo "BUILDTYPE ${BUILDTYPE}"
+echo "DISTRO ${DISTRO}"
 
 
 function isinstalled()
