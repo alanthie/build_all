@@ -23,6 +23,7 @@
 
 . /etc/os-release 
 DISTRO="${ID}_${VERSION_ID}" 
+DISTRO=catchyos_250202
 
 # -------------------------------------------------------
 # SET FOLDER where git repository are downloaded
@@ -45,6 +46,7 @@ echo "GIT Directory ${FOLDERPKG}"
 echo "BUILDTYPE ${BUILDTYPE}"
 echo "DISTRO ${DISTRO}"
 
+
 function install_pkg()
 {
 	sudo pacman -S --needed $1
@@ -64,17 +66,20 @@ function git_clone()
 # sudo pacman -Syu
 # 
 
-install_pkg g++
-install_pkg install base-devel
+install_pkg gcc
+install_pkg base-devel
 install_pkg ccache
 
 # static libgmp.a
+# Arch:
+# sudo pacman -S yay
+# yay -S libgmp-static
+# libtool --finish /usr/lib
 install_pkg gmp
 
 #sudo dnf -y copr enable patrickl/libcurl-gnutls
 #sudo dnf -y install libcurl-gnutls --refresh
 pacman -S --noconfirm curl
-install_pkg libcurl
 
 install_pkg cmake
 install_pkg git
@@ -82,6 +87,7 @@ install_pkg sfml
 
 # Fedora in CMakeLists.txt
 # set(OpenCV_DIR /usr/lib64/cmake/OpenCV)
+# Arch /usr/lib/cmake/opencv4/
 install_pkg opencv
 
 #sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
@@ -89,17 +95,16 @@ install_pkg opencv
 install_pkg ffmpeg
 
 # notcurses
-install_pkg ffmpeg-free-devel
-install_pkg libavcodec-freeworld
+#install_pkg ffmpeg-free-devel
+#install_pkg libavcodec-freeworld
 install_pkg doctest
-install_pkg libdeflate-static
 install_pkg libdeflate
 install_pkg ncurses
-install_pkg ncurses-devel
-#install_pkg libqrcodegen-devel
+#install_pkg libqrcodegen
 install_pkg libunistring
 install_pkg pandoc 
 install_pkg pkgconf
+
 
 # notcurses
 if [ -d "${FOLDER}/notcurses" ]; then
@@ -183,9 +188,10 @@ else
 	cp "${FOLDER}/libevent/build/include/event2/event-config.h" "${FOLDER}/libevent/include/event2/"
 fi
 
-# TODO:
-# make[2]: *** No rule to make target '/usr/lib/x86_64-linux-gnu/libgmp.a', needed by 'lnx_chatsrv/lnx_chatsrv'.  Stop.
-# /usr/lib64/libgmp.a
+# TODO add link_directories in cmake files /usr/lib64/ for /usr/lib64/libgmp.a
+# TODO for cryptochat2/mediaviewer project
+# SFML 2.2 is not loaded, it load the most recent version, compile from sources...
+#
 
 # cryptochat2
 if [ -d "${FOLDER}/cryptochat2" ]; then
