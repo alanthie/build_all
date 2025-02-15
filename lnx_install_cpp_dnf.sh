@@ -18,8 +18,8 @@
 # SET BUILDTYPE
 # 
 # Update your Linux first
-# sudo apt update
-# sudo apt upgrade
+# sudo dnf update
+# sudo dnf upgrade
 # -------------------------------------------------------
 
 . /etc/os-release 
@@ -46,13 +46,12 @@ echo "GIT Directory ${FOLDERPKG}"
 echo "BUILDTYPE ${BUILDTYPE}"
 echo "DISTRO ${DISTRO}"
 
-
 function install_pkg()
 {
-	if dnf list installed $1 &gt; /dev/null 2&gt;&amp;1; then
-	    echo "$1 is already installed"
+	if dnf info --installed $1 &>/dev/null; then
+		echo "already installed $1"
 	else
-	    sudo dnf install -y $1
+		sudo dnf install -y $1
 	fi
 }
 
@@ -66,43 +65,51 @@ function git_clone()
 	fi
 }
 
-# TESTING
-#isinstalled cmake
-#isinstalled cmakegg
-#install_pkg quadrapassel
-#remove_pkg  quadrapassel
-#FOLDER="/home/allaptop/tmp2"
-#git_clone https://github.com/alanthie/msgio.git "${FOLDER}/msio"
-
-
 # MANUAL 
-#sudo apt update
-#sudo apt upgrade
+#sudo dnf update
+#sudo dnf upgrade
 
 install_pkg g++
-install_pkg build-essential
-install_pkg aptitude
+sudo dnf -y install "C Development Tools and Libraries"
 install_pkg ccache
-install_pkg libgmp-dev
-install_pkg libcurl4-gnutls-dev
+
+# Fedora  static libgmp.a
+sudo dnf -y install gmp-static
+sudo dnf -y install gmp-devel.x86_64
+sudo dnf -y install gmp-devel gmp-c++
+
+sudo dnf -y copr enable patrickl/libcurl-gnutls
+sudo dnf -y install libcurl-gnutls --refresh
+install_pkg curl
+install_pkg curl-devel
+
 install_pkg cmake
 install_pkg git
-install_pkg libsfml-dev
-install_pkg libopencv-dev
+install_pkg SFML-devel
+
+# Fedora in CMakeLists.txt
+# set(OpenCV_DIR /usr/lib64/cmake/OpenCV)
+install_pkg opencv
+install_pkg opencv-devel
+
+sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 install_pkg ffmpeg
 
 # notcurses
-install_pkg doctest-dev 
-install_pkg libavdevice-dev 
-install_pkg libdeflate-dev 
-install_pkg libgpm-dev 
-install_pkg libncurses-dev 
-install_pkg libqrcodegen-dev 
-install_pkg libswscale-dev 
-install_pkg libunistring-dev 
+install_pkg ffmpeg-free-devel
+sudo dnf -y install libavcodec-freeworld
+install_pkg doctest-devel
+sudo dnf -y install libdeflate-static
+install_pkg libdeflate
+install_pkg libdeflate-devel
+install_pkg gmp-devel
+sudo dnf -y install ncurses-compat-libs
+install_pkg ncurses-devel
+install_pkg libqrcodegen-devel
+install_pkg libunistring-devel
 install_pkg pandoc 
-install_pkg pkg-config
-
+install_pkg pkgconf-pkg-config
 
 # notcurses
 if [ -d "${FOLDER}/notcurses" ]; then
@@ -186,6 +193,9 @@ else
 	cp "${FOLDER}/libevent/build/include/event2/event-config.h" "${FOLDER}/libevent/include/event2/"
 fi
 
+# TODO:
+# make[2]: *** No rule to make target '/usr/lib/x86_64-linux-gnu/libgmp.a', needed by 'lnx_chatsrv/lnx_chatsrv'.  Stop.
+# /usr/lib64/libgmp.a
 
 # cryptochat2
 if [ -d "${FOLDER}/cryptochat2" ]; then
