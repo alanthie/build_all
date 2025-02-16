@@ -23,8 +23,7 @@
 
 . /etc/os-release 
 DISTRO="${ID}_${VERSION_ID}" 
-# DISTRO=cachyos_250202
-DISTRO=cachyos_250202
+DISTRO=manjaro_24
 #
 #
 
@@ -63,6 +62,16 @@ function build_SFML_2_6()
 	sudo make install
 }
 
+function build_libgmp()
+{
+# answer N N
+ 	sudo pacman -S yay
+ 	yay -S libgmp-static
+ 	libtool --finish /usr/lib
+ 	install_pkg gmp
+}
+
+
 
 function install_pkg()
 {
@@ -86,26 +95,23 @@ function git_clone()
 install_pkg gcc
 install_pkg base-devel
 install_pkg ccache
-
-# MANUAL
-# static libgmp.a
-# Arch:
-# sudo pacman -S yay
-# yay -S libgmp-static
-# libtool --finish /usr/lib
-install_pkg gmp
-
-pacman -S --noconfirm curl
-
 install_pkg cmake
 install_pkg git
+pacman -S --noconfirm curl
+
+# MANUAL static libgmp.a
+# build_libgmp
 
 # MANUAL
-#build_SFML_2_6
+# build_SFML_2_6
 
 # Arch set(OpenCV_DIR /usr/lib/cmake/opencv4/)
 install_pkg opencv
-sudo pacman -Sy vtk hdf5
+#sudo pacman -Sy vtk hdf5
+install_pkg vtk
+install_pkg hdf5
+# Manjaro:
+install_pkg protobuf
 
 install_pkg ffmpeg
 
@@ -200,10 +206,7 @@ else
 	cp "${FOLDER}/libevent/build/include/event2/event-config.h" "${FOLDER}/libevent/include/event2/"
 fi
 
-# TODO add link_directories in cmake files /usr/lib64/ for /usr/lib64/libgmp.a
-# TODO for cryptochat2/mediaviewer project
-# SFML 2.2 is not loaded, it load the most recent version, compile from sources...
-#
+# check link_directories in cmake files /usr/lib64/ for libgmp.a
 
 # cryptochat2
 if [ -d "${FOLDER}/cryptochat2" ]; then
