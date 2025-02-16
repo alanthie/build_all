@@ -23,7 +23,10 @@
 
 . /etc/os-release 
 DISTRO="${ID}_${VERSION_ID}" 
-DISTRO=catchyos_250202
+# DISTRO=cachyos_250202
+DISTRO=EndeavourOS_Mercury-2025.02.08
+#
+#
 
 # -------------------------------------------------------
 # SET FOLDER where git repository are downloaded
@@ -45,6 +48,19 @@ echo "GIT Directory ${FOLDER}"
 echo "GIT Directory ${FOLDERPKG}"
 echo "BUILDTYPE ${BUILDTYPE}"
 echo "DISTRO ${DISTRO}"
+
+
+function build_SFML_2_6()
+{
+	cd /home/alain/dev
+	git clone https://github.com/SFML/SFML.git
+	git checkout 2.6.x
+	cd SFML
+	mkdir build
+	cmake ..
+	make
+	sudo make install
+}
 
 
 function install_pkg()
@@ -77,30 +93,27 @@ install_pkg ccache
 # libtool --finish /usr/lib
 install_pkg gmp
 
-#sudo dnf -y copr enable patrickl/libcurl-gnutls
-#sudo dnf -y install libcurl-gnutls --refresh
 pacman -S --noconfirm curl
 
 install_pkg cmake
 install_pkg git
-install_pkg sfml
 
-# Fedora in CMakeLists.txt
-# set(OpenCV_DIR /usr/lib64/cmake/OpenCV)
+# MANUAL
+#build_SFML_2_6
+#install_pkg sfml
+
+# Fedora in set(OpenCV_DIR /usr/lib64/cmake/OpenCV)
 # Arch /usr/lib/cmake/opencv4/
 install_pkg opencv
+# sudo pacman -S python-opencv
+sudo pacman -Sy vtk hdf5
 
-#sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-#sudo dnf -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 install_pkg ffmpeg
 
 # notcurses
-#install_pkg ffmpeg-free-devel
-#install_pkg libavcodec-freeworld
 install_pkg doctest
 install_pkg libdeflate
 install_pkg ncurses
-#install_pkg libqrcodegen
 install_pkg libunistring
 install_pkg pandoc 
 install_pkg pkgconf
