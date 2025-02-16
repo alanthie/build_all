@@ -24,7 +24,7 @@
 . /etc/os-release 
 DISTRO="${ID}_${VERSION_ID}" 
 # DISTRO=cachyos_250202
-DISTRO=EndeavourOS_Mercury-2025.02.08
+DISTRO=cachyos_250202
 #
 #
 
@@ -54,9 +54,10 @@ function build_SFML_2_6()
 {
 	cd /home/alain/dev
 	git clone https://github.com/SFML/SFML.git
-	git checkout 2.6.x
 	cd SFML
+	git checkout 2.6.x
 	mkdir build
+	cd build
 	cmake ..
 	make
 	sudo make install
@@ -86,6 +87,7 @@ install_pkg gcc
 install_pkg base-devel
 install_pkg ccache
 
+# MANUAL
 # static libgmp.a
 # Arch:
 # sudo pacman -S yay
@@ -100,12 +102,9 @@ install_pkg git
 
 # MANUAL
 #build_SFML_2_6
-#install_pkg sfml
 
-# Fedora in set(OpenCV_DIR /usr/lib64/cmake/OpenCV)
-# Arch /usr/lib/cmake/opencv4/
+# Arch set(OpenCV_DIR /usr/lib/cmake/opencv4/)
 install_pkg opencv
-# sudo pacman -S python-opencv
 sudo pacman -Sy vtk hdf5
 
 install_pkg ffmpeg
