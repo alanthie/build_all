@@ -124,6 +124,32 @@ install_pkg pandoc
 install_pkg pkgconf
 
 
+# Catch2
+if [ -d "${FOLDER}/Catch2" ]; then
+	echo "Directory already exist ${FOLDER}/Catch2 updating..."
+	cd "${FOLDER}/Catch2"
+	git pull origin devel
+else
+	cd "${FOLDER}"
+	git_clone https://github.com/catchorg/Catch2.git "${FOLDER}/Catch2"
+fi
+
+if [ -d "${FOLDER}/Catch2/build" ]; then
+	echo "Directory already exist ${FOLDER}/Catch2/build ..."
+	cd "${FOLDER}/Catch2/build"
+	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
+	make
+	sudo make install
+else
+	cd "${FOLDER}/Catch2"
+	mkdir build
+	cd build
+	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
+	make
+	sudo make install
+fi
+
+
 # notcurses
 if [ -d "${FOLDER}/notcurses" ]; then
 	echo "Directory already exist ${FOLDER}/notcurses updating..."

@@ -35,8 +35,8 @@ DISTRO="${ID}_${VERSION_ID}"
 BUILDTYPE=Release
 BUILDTYPElowercase=release
 
-#FOLDER="/home/user/dev"
-FOLDER="/home/alain/dev"
+FOLDER="/home/user/dev"
+#FOLDER="/home/alain/dev"
 FOLDERPKG="${FOLDER}/build_all/cryptoal/$DISTRO/${BUILDTYPElowercase}"
 mkdir "${FOLDER}/build_all/cryptoal"
 mkdir "${FOLDER}/build_all/cryptoal/$DISTRO"
@@ -127,6 +127,31 @@ install_pkg libswscale-dev
 install_pkg libunistring-dev 
 install_pkg pandoc 
 install_pkg pkg-config
+
+# Catch2
+if [ -d "${FOLDER}/Catch2" ]; then
+	echo "Directory already exist ${FOLDER}/Catch2 updating..."
+	cd "${FOLDER}/Catch2"
+	git pull origin devel
+else
+	cd "${FOLDER}"
+	git_clone https://github.com/catchorg/Catch2.git "${FOLDER}/Catch2"
+fi
+
+if [ -d "${FOLDER}/Catch2/build" ]; then
+	echo "Directory already exist ${FOLDER}/Catch2/build ..."
+	cd "${FOLDER}/Catch2/build"
+	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
+	make
+	sudo make install
+else
+	cd "${FOLDER}/Catch2"
+	mkdir build
+	cd build
+	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
+	make
+	sudo make install
+fi
 
 
 # notcurses
