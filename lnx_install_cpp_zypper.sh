@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # -------------------------------------------------------
-# lnx_install_cpp_rpm.sh
+# lnx_install_cpp_zypper.sh
 #
 # This will build all my encryption software for Linux
 # You can rerun it, and will rebuild the changed parts
@@ -69,13 +69,7 @@ function git_clone()
 
 function build_SFML_2_6()
 {
-#-- UDev not found.
-#-- UDev: You can specify includes: -DUDEV_PATH_INCLUDES=/opt/udev/include
-#--       currently found includes: UDEV_INCLUDE_DIR-NOTFOUND
-#-- UDev: You can specify libs: -DUDEV_PATH_LIB=/opt/udev/lib   /usr/lib64 
-#--       currently found libs: UDEV_LIBRARIES-NOTFOUND
-
-	cd /home/alain/dev
+	cd $1
 	git clone https://github.com/SFML/SFML.git
 	cd SFML
 	git checkout 2.6.x
@@ -91,8 +85,6 @@ function build_SFML_2_6()
 #sudo zypper install dnf
 #sudo zypper refresh
 #sudo zypper update
-#sudo zypper addrepo https://download.opensuse.org/repositories/openSUSE:Leap:15.2/standard/openSUSE:Leap:15.2.repo
-#sudo zypper refresh
 
 install_pkg gcc-c++
 sudo zypper install -t pattern devel_basis
@@ -100,42 +92,27 @@ install_pkg ccache
 install_pkg cmake
 install_pkg git
 
-# static libgmp.a
+# static no libgmp.a ???
 # openSUSE_Tumbleweed
 #sudo zypper addrepo https://download.opensuse.org/repositories/home:Dead_Mozay:GNOME:Apps/openSUSE_Tumbleweed/home:Dead_Mozay:GNOME:Apps.repo
 #sudo zypper refresh
 #sudo zypper install gmp-devel-6.3.0-116.27.x86_64
 
-# MANUAL
-# OpenSuse Leap
-#sudo zypper addrepo https://download.opensuse.org/repositories/home:Dead_Mozay:GNOME:Apps/15.6/home:Dead_Mozay:GNOME:Apps.repo
-#sudo zypper refresh
-#sudo zypper install gmp
-
-# MANUAL
-# OpenSuse Leap
-#sudo zypper addrepo https://download.opensuse.org/repositories/X11:XOrg/openSUSE_Leap_15.6/X11:XOrg.repo
-#sudo zypper refresh
-#sudo zypper install xorg-x11-server
-
 install_pkg libX11-devel
 install_pkg glu-devel
 install_pkg libudev-devel
 install_pkg libXrandr-devel
-
-# openSUSE_Tumbleweed
-#install_pkg libXcursor-devel
+#install_pkg libXcursor-devel ???
 install_pkg libopenal1
 install_pkg openal-devel
-
 install_pkg sfml2-devel
-# MANUAL /usr/local/lib64 /usr/local/./include/SFML
-# build_SFML_2_6
+# MANUAL alternative
+# build_SFML_2_6 "${FOLDER}"
 
 install_pkg curl
 install_pkg curl-devel
 
-# CMakeLists.txt set(OpenCV_DIR /usr/lib64/cmake/OpenCV)
+# In CMakeLists.txt set(OpenCV_DIR /usr/lib64/cmake/OpenCV)
 install_pkg opencv
 install_pkg opencv-devel
 
@@ -148,18 +125,11 @@ install_pkg libunistring-devel
 install_pkg pandoc 
 install_pkg pkg-config
 
-# MANUAL libavcodec at /usr/lib64
+# MANUAL ffmpeg libavcodec 
 #sudo zypper addrepo -cfp 90 'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/' packman
 #sudo zypper refresh
 #sudo zypper dist-upgrade --from packman --allow-vendor-change
 #sudo zypper install --from packman ffmpeg libavcodec-full vlc-codecs
-
-# MANUAL
-# OpenSuse Leap
-# sudo zypper addrepo -cfp 90 'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Leap_$releasever/' packman
-# sudo zypper refresh
-# sudo zypper dist-upgrade --from packman --allow-vendor-change
-# sudo zypper install --from packman ffmpeg gstreamer-plugins-{good,bad,ugly,libav} libavcodec vlc-codecs
 
 
 # Catch2
