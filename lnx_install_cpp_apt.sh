@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # -------------------------------------------------------
-# lnx_install_cpp.sh
+# lnx_install_cpp_apt.sh
 #
 # This will build all my encryption software for Linux
 # You can rerun it, and will rebuild the changed parts
@@ -35,8 +35,8 @@ DISTRO="${ID}_${VERSION_ID}"
 BUILDTYPE=Release
 BUILDTYPElowercase=release
 
-FOLDER="/home/user/dev"
-#FOLDER="/home/alain/dev"
+#FOLDER="/home/user/dev"
+FOLDER="/home/alain/dev"
 FOLDERPKG="${FOLDER}/build_all/cryptoal/$DISTRO/${BUILDTYPElowercase}"
 mkdir "${FOLDER}/build_all/cryptoal"
 mkdir "${FOLDER}/build_all/cryptoal/$DISTRO"
@@ -91,13 +91,19 @@ function git_clone()
 	fi
 }
 
-# TESTING
-#isinstalled cmake
-#isinstalled cmakegg
-#install_pkg quadrapassel
-#remove_pkg  quadrapassel
-#FOLDER="/home/allaptop/tmp2"
-#git_clone https://github.com/alanthie/msgio.git "${FOLDER}/msio"
+function build_SFML_2_6()
+{
+	# *.pc are in /usr/lib/x86_64-linux-gnu/pkgconfig
+	cd $1
+	git clone https://github.com/SFML/SFML.git
+	cd SFML
+	git checkout 2.6.x
+	mkdir build
+	cd build
+	cmake ..
+	make
+	sudo make install
+}
 
 
 # MANUAL 
@@ -112,7 +118,18 @@ install_pkg libgmp-dev
 install_pkg libcurl4-gnutls-dev
 install_pkg cmake
 install_pkg git
+
 install_pkg libsfml-dev
+install_pkg libudev-dev
+install_pkg libopenal-dev
+install_pkg libvorbis-dev
+install_pkg libflac-dev
+install_pkg libx11-dev 
+install_pkg libxrandr-dev 
+install_pkg libxinerama-dev 
+install_pkg libxcursor-dev 
+install_pkg libxi-dev
+install_pkg libfreetype-dev
 install_pkg libopencv-dev
 install_pkg ffmpeg
 
@@ -127,6 +144,17 @@ install_pkg libswscale-dev
 install_pkg libunistring-dev 
 install_pkg pandoc 
 install_pkg pkg-config
+
+
+# SFML_2_6
+if [ -d "${FOLDER}/SFML" ]; then
+	echo "Directory already exist ${FOLDER}/SFML skipping..."
+	# ...
+else
+	cd "${FOLDER}"
+	build_SFML_2_6 "${FOLDER}"
+fi
+
 
 # Catch2
 if [ -d "${FOLDER}/Catch2" ]; then
@@ -218,12 +246,14 @@ if [ -d "${FOLDER}/libevent/build" ]; then
 	cd "${FOLDER}/libevent/build"
 	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
 	make
+	sudo make install
 else
 	cd "${FOLDER}/libevent"
 	mkdir build
 	cd build
 	cmake .. -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
 	make
+	sudo make install
 fi
 
 
