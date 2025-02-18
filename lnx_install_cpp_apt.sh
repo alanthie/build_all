@@ -93,8 +93,7 @@ function git_clone()
 
 function build_SFML_2_6()
 {
-	# TODO: Could not find UDev library, ...
-	# Missing *.pc in /usr/lib/x86_64-linux-gnu/pkgconfig
+	# *.pc are in /usr/lib/x86_64-linux-gnu/pkgconfig
 	cd $1
 	git clone https://github.com/SFML/SFML.git
 	cd SFML
@@ -121,9 +120,16 @@ install_pkg cmake
 install_pkg git
 
 install_pkg libsfml-dev
-# MANUAL alternative
-# build_SFML_2_6 "${FOLDER}"
-
+install_pkg libudev-dev
+install_pkg libopenal-dev
+install_pkg libvorbis-dev
+install_pkg libflac-dev
+install_pkg libx11-dev 
+install_pkg libxrandr-dev 
+install_pkg libxinerama-dev 
+install_pkg libxcursor-dev 
+install_pkg libxi-dev
+install_pkg libfreetype-dev
 install_pkg libopencv-dev
 install_pkg ffmpeg
 
@@ -138,6 +144,17 @@ install_pkg libswscale-dev
 install_pkg libunistring-dev 
 install_pkg pandoc 
 install_pkg pkg-config
+
+
+# SFML_2_6
+if [ -d "${FOLDER}/SFML" ]; then
+	echo "Directory already exist ${FOLDER}/SFML skipping..."
+	# ...
+else
+	cd "${FOLDER}"
+	build_SFML_2_6 "${FOLDER}"
+fi
+
 
 # Catch2
 if [ -d "${FOLDER}/Catch2" ]; then
@@ -229,12 +246,14 @@ if [ -d "${FOLDER}/libevent/build" ]; then
 	cd "${FOLDER}/libevent/build"
 	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
 	make
+	sudo make install
 else
 	cd "${FOLDER}/libevent"
 	mkdir build
 	cd build
 	cmake .. -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
 	make
+	sudo make install
 fi
 
 
