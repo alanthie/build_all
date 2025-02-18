@@ -73,10 +73,10 @@ install_pkg g++
 sudo dnf -y install "C Development Tools and Libraries"
 install_pkg ccache
 
-# Fedora  static libgmp.a
-sudo dnf -y install gmp-static
-sudo dnf -y install gmp-devel.x86_64
-sudo dnf -y install gmp-devel gmp-c++
+# static libgmp.a
+install_pkg gmp-static
+install_pkg gmp-devel.x86_64
+install_pkg gmp-devel gmp-c++
 
 sudo dnf -y copr enable patrickl/libcurl-gnutls
 sudo dnf -y install libcurl-gnutls --refresh
@@ -87,8 +87,7 @@ install_pkg cmake
 install_pkg git
 install_pkg SFML-devel
 
-# Fedora in CMakeLists.txt
-# set(OpenCV_DIR /usr/lib64/cmake/OpenCV)
+# CMakeLists.txt set(OpenCV_DIR /usr/lib64/cmake/OpenCV)
 install_pkg opencv
 install_pkg opencv-devel
 
@@ -98,13 +97,13 @@ install_pkg ffmpeg
 
 # notcurses
 install_pkg ffmpeg-free-devel
-sudo dnf -y install libavcodec-freeworld
+install_pkg libavcodec-freeworld
 install_pkg doctest-devel
-sudo dnf -y install libdeflate-static
+install_pkg libdeflate-static
 install_pkg libdeflate
 install_pkg libdeflate-devel
 install_pkg gmp-devel
-sudo dnf -y install ncurses-compat-libs
+install_pkg ncurses-compat-libs
 install_pkg ncurses-devel
 install_pkg libqrcodegen-devel
 install_pkg libunistring-devel
@@ -220,9 +219,6 @@ else
 	cp "${FOLDER}/libevent/build/include/event2/event-config.h" "${FOLDER}/libevent/include/event2/"
 fi
 
-# TODO:
-# make[2]: *** No rule to make target '/usr/lib/x86_64-linux-gnu/libgmp.a', needed by 'lnx_chatsrv/lnx_chatsrv'.  Stop.
-# /usr/lib64/libgmp.a
 
 # cryptochat2
 if [ -d "${FOLDER}/cryptochat2" ]; then
