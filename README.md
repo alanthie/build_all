@@ -3,7 +3,7 @@ build all my encryption software
 
 <pre>
 # -------------------------------------------------------
-# lnx_install_cpp.sh (apt based Linux distros)
+# lnx_install_cpp_apt.sh (apt based Linux distros)
 #
 # This will build all my encryption software for Linux.
 # You can rerun it, and will rebuild the changed parts.
