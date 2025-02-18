@@ -23,6 +23,16 @@ else
 	echo "cannot - cd ~/dev/build_all"
 fi
 
+if [ -d ~/dev/Catch2 ]; then
+	cd ~/dev/Catch2
+	git archive --format=zip --output ~/dev_zip/Catch2.zip devel -v
+fi
+
+if [ -d ~/dev/SFML ]; then
+	cd ~/dev/Catch2
+	git archive --format=zip --output ~/dev_zip/SFML.zip 2.6.x -v
+fi
+
 if [ -d ~/dev/cryptochat2 ]; then
 	cd ~/dev/cryptochat2
 	git archive --format=zip --output ~/dev_zip/cryptochat2.zip main -v

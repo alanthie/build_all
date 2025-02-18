@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # -------------------------------------------------------
-# lnx_install_cpp.sh
+# lnx_install_cpp_apt.sh
 #
 # This will build all my encryption software for Linux
 # You can rerun it, and will rebuild the changed parts
@@ -35,8 +35,8 @@ DISTRO="${ID}_${VERSION_ID}"
 BUILDTYPE=Release
 BUILDTYPElowercase=release
 
-FOLDER="/home/user/dev"
-#FOLDER="/home/alain/dev"
+#FOLDER="/home/user/dev"
+FOLDER="/home/alain/dev"
 FOLDERPKG="${FOLDER}/build_all/cryptoal/$DISTRO/${BUILDTYPElowercase}"
 mkdir "${FOLDER}/build_all/cryptoal"
 mkdir "${FOLDER}/build_all/cryptoal/$DISTRO"
@@ -91,13 +91,20 @@ function git_clone()
 	fi
 }
 
-# TESTING
-#isinstalled cmake
-#isinstalled cmakegg
-#install_pkg quadrapassel
-#remove_pkg  quadrapassel
-#FOLDER="/home/allaptop/tmp2"
-#git_clone https://github.com/alanthie/msgio.git "${FOLDER}/msio"
+function build_SFML_2_6()
+{
+	# TODO: Could not find UDev library, ...
+	# Missing *.pc in /usr/lib/x86_64-linux-gnu/pkgconfig
+	cd $1
+	git clone https://github.com/SFML/SFML.git
+	cd SFML
+	git checkout 2.6.x
+	mkdir build
+	cd build
+	cmake ..
+	make
+	sudo make install
+}
 
 
 # MANUAL 
@@ -112,7 +119,11 @@ install_pkg libgmp-dev
 install_pkg libcurl4-gnutls-dev
 install_pkg cmake
 install_pkg git
+
 install_pkg libsfml-dev
+# MANUAL alternative
+# build_SFML_2_6 "${FOLDER}"
+
 install_pkg libopencv-dev
 install_pkg ffmpeg
 
