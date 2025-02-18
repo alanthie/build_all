@@ -29,7 +29,7 @@ if [ -d ~/dev/Catch2 ]; then
 fi
 
 if [ -d ~/dev/SFML ]; then
-	cd ~/dev/Catch2
+	cd ~/dev/SFML
 	git archive --format=zip --output ~/dev_zip/SFML.zip 2.6.x -v
 fi
 
