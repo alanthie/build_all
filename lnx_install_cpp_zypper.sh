@@ -97,22 +97,20 @@ function build_SFML_2_6()
 install_pkg gcc-c++
 sudo zypper install -t pattern devel_basis
 install_pkg ccache
-
 install_pkg cmake
 install_pkg git
 
-# static libgmp.a /usr/lib64
-install_pkg gmp
+# static libgmp.a
+# openSUSE_Tumbleweed
+#sudo zypper addrepo https://download.opensuse.org/repositories/home:Dead_Mozay:GNOME:Apps/openSUSE_Tumbleweed/home:Dead_Mozay:GNOME:Apps.repo
+#sudo zypper refresh
+#sudo zypper install gmp-devel-6.3.0-116.27.x86_64
 
 # MANUAL
 # OpenSuse Leap
 #sudo zypper addrepo https://download.opensuse.org/repositories/home:Dead_Mozay:GNOME:Apps/15.6/home:Dead_Mozay:GNOME:Apps.repo
 #sudo zypper refresh
 #sudo zypper install gmp
-
-# openSUSE_Tumbleweed
-sudo zypper ar http://packman.links2linux.org/openSUSE_Tumbleweed/ packman
-sudo zypper in ffmpeg
 
 # MANUAL
 # OpenSuse Leap
@@ -121,42 +119,40 @@ sudo zypper in ffmpeg
 #sudo zypper install xorg-x11-server
 
 install_pkg libX11-devel
-zypper addrepo https://download.opensuse.org/repositories/X11:XOrg/openSUSE_Tumbleweed/X11:XOrg.repo
-zypper refresh
-zypper install libX11
-zypper install mesa-libGLU
-
-#install_pkg glu-devel
+install_pkg glu-devel
 install_pkg libudev-devel
 install_pkg libXrandr-devel
 
 # openSUSE_Tumbleweed
-zypper addrepo https://download.opensuse.org/repositories/X11:XOrg/openSUSE_Tumbleweed/X11:XOrg.repo
-zypper refresh
-zypper install libXcursor-devel
 #install_pkg libXcursor-devel
+install_pkg libopenal1
+install_pkg openal-devel
 
-#install_pkg sfml2-devel
+install_pkg sfml2-devel
 # MANUAL /usr/local/lib64 /usr/local/./include/SFML
-build_SFML_2_6
+# build_SFML_2_6
 
 install_pkg curl
-# openSUSE_Tumbleweed
-sudo SUSEConnect -p sle-sdk/12.4/x86_64
 install_pkg curl-devel
 
 # CMakeLists.txt set(OpenCV_DIR /usr/lib64/cmake/OpenCV)
 install_pkg opencv
 install_pkg opencv-devel
-install_pkg ffmpeg
 
 # notcurses
 install_pkg libdeflate-devel
 install_pkg gpm-devel
 install_pkg ncurses-devel
+install_pkg doctest-devel
 install_pkg libunistring-devel
 install_pkg pandoc 
 install_pkg pkg-config
+
+# MANUAL libavcodec at /usr/lib64
+#sudo zypper addrepo -cfp 90 'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/' packman
+#sudo zypper refresh
+#sudo zypper dist-upgrade --from packman --allow-vendor-change
+#sudo zypper install --from packman ffmpeg libavcodec-full vlc-codecs
 
 # MANUAL
 # OpenSuse Leap
@@ -205,7 +201,7 @@ fi
 if [ -d "${FOLDER}/notcurses/build" ]; then
 	echo "Directory already exist ${FOLDER}/notcurses/build ..."
 	cd "${FOLDER}/notcurses/build"
-	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
+	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}" -DUSE_MULTIMEDIA=none -DUSE_DOCTEST=off
 	make
 	sudo make install
 else
@@ -217,7 +213,7 @@ else
 	# REQUIRE later to find *.h
 	sudo make install
 fi
-exit	
+
 
 # wide-integer
 if [ -d "${FOLDER}/wide-integer" ]; then
@@ -256,12 +252,14 @@ if [ -d "${FOLDER}/libevent/build" ]; then
 	cd "${FOLDER}/libevent/build"
 	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
 	make
+	sudo make install
 else
 	cd "${FOLDER}/libevent"
 	mkdir build
 	cd build
 	cmake .. -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
 	make
+	sudo make install
 fi
 
 
@@ -274,9 +272,6 @@ else
 	cp "${FOLDER}/libevent/build/include/event2/event-config.h" "${FOLDER}/libevent/include/event2/"
 fi
 
-# TODO:
-# make[2]: *** No rule to make target '/usr/lib/x86_64-linux-gnu/libgmp.a', needed by 'lnx_chatsrv/lnx_chatsrv'.  Stop.
-# /usr/lib64/libgmp.a
 
 # cryptochat2
 if [ -d "${FOLDER}/cryptochat2" ]; then
