@@ -65,6 +65,19 @@ function git_clone()
 	fi
 }
 
+function build_SFML_2_6()
+{
+	cd $1
+	git clone https://github.com/SFML/SFML.git
+	cd SFML
+	git checkout 2.6.x
+	mkdir build
+	cd build
+	cmake ..
+	make
+	sudo make install
+}
+
 # MANUAL 
 #sudo dnf update
 #sudo dnf upgrade
