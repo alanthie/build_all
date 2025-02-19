@@ -28,7 +28,7 @@ DISTRO="${ID}_${VERSION_ID}"
 
 # -------------------------------------------------------
 # SET FOLDER where git repository are downloaded
-# SET FOLDER where packages (binaries) are output
+# SET FOLDERPKG where packages (binaries) are output
 # SET BUILDTYPE
 # -------------------------------------------------------
 #BUILDTYPE=Debug
