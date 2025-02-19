@@ -124,6 +124,10 @@ install_pkg pandoc
 install_pkg pkgconf-pkg-config
 
 
+# MANUAL
+# build_SFML_2_6 "${FOLDER}"
+
+
 # Catch2
 if [ -d "${FOLDER}/Catch2" ]; then
 	echo "Directory already exist ${FOLDER}/Catch2 updating..."
