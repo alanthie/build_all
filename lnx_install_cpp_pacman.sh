@@ -51,7 +51,7 @@ echo "DISTRO ${DISTRO}"
 
 function build_SFML_2_6()
 {
-	cd /home/alain/dev
+	cd $1
 	git clone https://github.com/SFML/SFML.git
 	cd SFML
 	git checkout 2.6.x
@@ -103,7 +103,7 @@ pacman -S --noconfirm curl
 # build_libgmp
 
 # MANUAL
-# build_SFML_2_6
+# build_SFML_2_6 "${FOLDER}"
 
 # Arch set(OpenCV_DIR /usr/lib/cmake/opencv4/)
 install_pkg opencv
