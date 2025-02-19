@@ -65,6 +65,19 @@ function git_clone()
 	fi
 }
 
+function build_SFML_2_6()
+{
+	cd $1
+	git clone https://github.com/SFML/SFML.git
+	cd SFML
+	git checkout 2.6.x
+	mkdir build
+	cd build
+	cmake ..
+	make
+	sudo make install
+}
+
 # MANUAL 
 #sudo dnf update
 #sudo dnf upgrade
@@ -109,6 +122,10 @@ install_pkg libqrcodegen-devel
 install_pkg libunistring-devel
 install_pkg pandoc 
 install_pkg pkgconf-pkg-config
+
+
+# MANUAL
+# build_SFML_2_6 "${FOLDER}"
 
 
 # Catch2
