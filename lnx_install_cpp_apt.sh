@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # -------------------------------------------------------
-# lnx_install_cpp_apt.sh
+# lnx_install_cpp_apt.sh [for apt based linux distros]
 #
 # This will build all my encryption software for Linux
 # You can rerun it, and will rebuild the changed parts
