@@ -19,29 +19,28 @@
 # -------------------------------------------------------
 
 . /etc/os-release 
-DISTRO="${ID}_${VERSION_ID}" 
+#DISTRO="${ID}_${VERSION_ID}" 
+DISTRO="LinuxLite_7.2" 
 
 # -------------------------------------------------------
 # SET FOLDER where git repository are downloaded
-# SET FOLDERPKG where packages (binaries) are output
-# SET BUILDTYPE
-# SET BUILD_MEDIAVIEWER_OPTION
-# SET BUILD_TEST_OPTION
+# SET BUILDTYPE Release or Debug
+# SET BUILDTYPElowercase
+# SET BUILD_MEDIAVIEWER_OPTION ON or OFF
+# SET BUILD_TEST_OPTION ON or OFF
+# FOLDERPKG is where packages (binaries) are output
 # -------------------------------------------------------
-#BUILDTYPE=Debug
-#BUILDTYPElowercase=debug
+
 BUILDTYPE=Release
 BUILDTYPElowercase=release
-
-# BUILD_MEDIAVIEWER_OPTION=ON or BUILD_MEDIAVIEWER_OPTION=OFF
 BUILD_MEDIAVIEWER_OPTION=ON
 BUILD_TEST_OPTION=ON
+#FOLDER="/home/user/dev"
+FOLDER="/home/alain/dev"
 
-FOLDER="/home/user/dev"
-#FOLDER="/home/alain/dev"
-FOLDERPKG="${FOLDER}/build_all/cryptoal/$DISTRO/${BUILDTYPElowercase}"
 mkdir "${FOLDER}/build_all/cryptoal"
-mkdir "${FOLDER}/build_all/cryptoal/$DISTRO"
+mkdir "${FOLDER}/build_all/cryptoal/${DISTRO}"
+FOLDERPKG="${FOLDER}/build_all/cryptoal/$DISTRO/${BUILDTYPElowercase}"
 
 echo "GIT Directory ${FOLDER}"
 echo "FOLDER PKG Directory ${FOLDERPKG}"
