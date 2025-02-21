@@ -13,10 +13,6 @@
 # https://github.com/alanthie/Encryptions
 # https://github.com/alanthie/cryptochat2
 #
-# SET FOLDER where git repository are downloaded
-# SET FOLDERPKG where packages (binaries) are output
-# SET BUILDTYPE
-# 
 # Update your Linux first
 # sudo apt update
 # sudo apt upgrade
@@ -29,11 +25,15 @@ DISTRO="${ID}_${VERSION_ID}"
 # SET FOLDER where git repository are downloaded
 # SET FOLDERPKG where packages (binaries) are output
 # SET BUILDTYPE
+# SET BUILD_MEDIAVIEWER_OPTION
 # -------------------------------------------------------
 #BUILDTYPE=Debug
 #BUILDTYPElowercase=debug
 BUILDTYPE=Release
 BUILDTYPElowercase=release
+
+# BUILD_MEDIAVIEWER_OPTION=ON or BUILD_MEDIAVIEWER_OPTION=OFF
+BUILD_MEDIAVIEWER_OPTION=OFF
 
 FOLDER="/home/user/dev"
 #FOLDER="/home/alain/dev"
@@ -44,7 +44,8 @@ mkdir "${FOLDER}/build_all/cryptoal/$DISTRO"
 echo "GIT Directory ${FOLDER}"
 echo "GIT Directory ${FOLDERPKG}"
 echo "BUILDTYPE ${BUILDTYPE}"
-echo "DISTRO ${DISTRO}"
+echo "BUILDTYPE ${BUILDTYPE}"
+echo "BUILD_MEDIAVIEWER_OPTION ${BUILD_MEDIAVIEWER_OPTION}"
 
 
 function isinstalled()
@@ -119,19 +120,22 @@ install_pkg libcurl4-gnutls-dev
 install_pkg cmake
 install_pkg git
 
-install_pkg libsfml-dev
-install_pkg libudev-dev
-install_pkg libopenal-dev
-install_pkg libvorbis-dev
-install_pkg libflac-dev
-install_pkg libx11-dev 
-install_pkg libxrandr-dev 
-install_pkg libxinerama-dev 
-install_pkg libxcursor-dev 
-install_pkg libxi-dev
-install_pkg libfreetype-dev
-install_pkg libopencv-dev
-install_pkg ffmpeg
+if [ "${BUILD_MEDIAVIEWER_OPTION}" = ON ] 
+then
+	install_pkg libsfml-dev
+	install_pkg libudev-dev
+	install_pkg libopenal-dev
+	install_pkg libvorbis-dev
+	install_pkg libflac-dev
+	install_pkg libx11-dev 
+	install_pkg libxrandr-dev 
+	install_pkg libxinerama-dev 
+	install_pkg libxcursor-dev 
+	install_pkg libxi-dev
+	install_pkg libfreetype-dev
+	install_pkg libopencv-dev
+	install_pkg ffmpeg
+fi
 
 # notcurses
 install_pkg doctest-dev 
@@ -147,14 +151,16 @@ install_pkg pkg-config
 
 
 # SFML_2_6
-if [ -d "${FOLDER}/SFML" ]; then
-	echo "Directory already exist ${FOLDER}/SFML skipping..."
-	# ...
-else
-	cd "${FOLDER}"
-	build_SFML_2_6 "${FOLDER}"
+if [ "${BUILD_MEDIAVIEWER_OPTION}" = ON ] 
+then
+	if [ -d "${FOLDER}/SFML" ]; then
+		echo "Directory already exist ${FOLDER}/SFML skipping..."
+		# ...
+	else
+		cd "${FOLDER}"
+		build_SFML_2_6 "${FOLDER}"
+	fi
 fi
-
 
 # Catch2
 if [ -d "${FOLDER}/Catch2" ]; then
@@ -281,13 +287,13 @@ fi
 if [ -d "${FOLDER}/cryptochat2/build" ]; then
 	echo "Directory already exist ${FOLDER}/cryptochat2/build ..."
 	cd "${FOLDER}/cryptochat2/build"
-	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
+	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}" -DBUILD_MEDIAVIEWER="${BUILD_MEDIAVIEWER_OPTION}" 
 	make
 else
 	cd "${FOLDER}/cryptochat2"
 	mkdir build
 	cd build
-	cmake .. -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
+	cmake .. -DCMAKE_BUILD_TYPE="${BUILDTYPE}" -DBUILD_MEDIAVIEWER="${BUILD_MEDIAVIEWER_OPTION}" 
 	make
 fi
 
@@ -372,9 +378,12 @@ cp "${FOLDER}/Encryptions/build/src/crypto" "${FOLDERPKG}/"
 cp "${FOLDER}/Encryptions/build/src/qa/qa"  "${FOLDERPKG}/"
 cp "${FOLDER}/cryptochat2/build/lnx_chatcli/lnx_chatcli" "${FOLDERPKG}/"
 cp "${FOLDER}/cryptochat2/build/lnx_chatsrv/lnx_chatsrv" "${FOLDERPKG}/"
-cp "${FOLDER}/cryptochat2/build/mediaviewer/mediaviewer" "${FOLDERPKG}/"
-mkdir "${FOLDERPKG}/res"
-cp -r "${FOLDER}/cryptochat2/mediaviewer/prj/res"  "${FOLDERPKG}/"
+if [ "${BUILD_MEDIAVIEWER_OPTION}" = ON ] 
+then
+	cp "${FOLDER}/cryptochat2/build/mediaviewer/mediaviewer" "${FOLDERPKG}/"
+	mkdir "${FOLDERPKG}/res"
+	cp -r "${FOLDER}/cryptochat2/mediaviewer/prj/res"  "${FOLDERPKG}/"
+fi
 mkdir "${FOLDERPKG}/doc"
 cp "${FOLDER}/cryptochat2/release_readme.txt"      "${FOLDERPKG}/doc/chat_readme.txt"
 cp "${FOLDER}/Encryptions/README.md"               "${FOLDERPKG}/doc/crypto_readme.md.txt"
