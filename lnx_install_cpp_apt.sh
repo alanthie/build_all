@@ -46,7 +46,6 @@ mkdir "${FOLDER}/build_all/cryptoal/$DISTRO"
 echo "GIT Directory ${FOLDER}"
 echo "GIT Directory ${FOLDERPKG}"
 echo "BUILDTYPE ${BUILDTYPE}"
-echo "BUILDTYPE ${BUILDTYPE}"
 echo "BUILD_MEDIAVIEWER_OPTION ${BUILD_MEDIAVIEWER_OPTION}"
 echo "BUILD_TEST_OPTION ${BUILD_TEST_OPTION}"
 
