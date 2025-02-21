@@ -116,9 +116,10 @@ install_pkg g++
 install_pkg build-essential
 install_pkg aptitude
 install_pkg ccache
-install_pkg libcurl4-gnutls-dev
 install_pkg cmake
 install_pkg git
+install_pkg libcurl4-gnutls-dev
+install_pkg libgmp-dev
 
 if [ "${BUILD_MEDIAVIEWER_OPTION}" = ON ] 
 then
@@ -138,7 +139,6 @@ then
 fi
 
 # notcurses
-install_pkg libgmp-dev
 install_pkg doctest-dev 
 #install_pkg libavdevice-dev #-DUSE_MULTIMEDIA=none
 install_pkg libdeflate-dev 
