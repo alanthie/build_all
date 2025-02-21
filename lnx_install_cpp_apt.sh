@@ -26,6 +26,7 @@ DISTRO="${ID}_${VERSION_ID}"
 # SET FOLDERPKG where packages (binaries) are output
 # SET BUILDTYPE
 # SET BUILD_MEDIAVIEWER_OPTION
+# SET BUILD_TEST_OPTION
 # -------------------------------------------------------
 #BUILDTYPE=Debug
 #BUILDTYPElowercase=debug
@@ -34,6 +35,7 @@ BUILDTYPElowercase=release
 
 # BUILD_MEDIAVIEWER_OPTION=ON or BUILD_MEDIAVIEWER_OPTION=OFF
 BUILD_MEDIAVIEWER_OPTION=ON
+BUILD_TEST_OPTION=ON
 
 FOLDER="/home/user/dev"
 #FOLDER="/home/alain/dev"
@@ -46,7 +48,7 @@ echo "GIT Directory ${FOLDERPKG}"
 echo "BUILDTYPE ${BUILDTYPE}"
 echo "BUILDTYPE ${BUILDTYPE}"
 echo "BUILD_MEDIAVIEWER_OPTION ${BUILD_MEDIAVIEWER_OPTION}"
-
+echo "BUILD_TEST_OPTION ${BUILD_TEST_OPTION}"
 
 function isinstalled()
 {
@@ -163,30 +165,32 @@ then
 fi
 
 # Catch2
-if [ -d "${FOLDER}/Catch2" ]; then
-	echo "Directory already exist ${FOLDER}/Catch2 updating..."
-	cd "${FOLDER}/Catch2"
-	git pull origin devel
-else
-	cd "${FOLDER}"
-	git_clone https://github.com/catchorg/Catch2.git "${FOLDER}/Catch2"
-fi
+if [ "${BUILD_TEST_OPTION}" = ON ] 
+then
+	if [ -d "${FOLDER}/Catch2" ]; then
+		echo "Directory already exist ${FOLDER}/Catch2 updating..."
+		cd "${FOLDER}/Catch2"
+		git pull origin devel
+	else
+		cd "${FOLDER}"
+		git_clone https://github.com/catchorg/Catch2.git "${FOLDER}/Catch2"
+	fi
 
-if [ -d "${FOLDER}/Catch2/build" ]; then
-	echo "Directory already exist ${FOLDER}/Catch2/build ..."
-	cd "${FOLDER}/Catch2/build"
-	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
-	make
-	sudo make install
-else
-	cd "${FOLDER}/Catch2"
-	mkdir build
-	cd build
-	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
-	make
-	sudo make install
+	if [ -d "${FOLDER}/Catch2/build" ]; then
+		echo "Directory already exist ${FOLDER}/Catch2/build ..."
+		cd "${FOLDER}/Catch2/build"
+		cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
+		make
+		sudo make install
+	else
+		cd "${FOLDER}/Catch2"
+		mkdir build
+		cd build
+		cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
+		make
+		sudo make install
+	fi
 fi
-
 
 # notcurses
 if [ -d "${FOLDER}/notcurses" ]; then
@@ -355,13 +359,13 @@ fi
 if [ -d "${FOLDER}/Encryptions/build" ]; then
 	echo "Directory already exist ${FOLDER}/Encryptions/build ..."
 	cd "${FOLDER}/Encryptions/build"
-	cmake .. -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
+	cmake .. -DCMAKE_BUILD_TYPE="${BUILDTYPE}" -DBUILD_TEST="${BUILD_TEST_OPTION}" 
 	make
 else
 	cd "${FOLDER}/Encryptions"
 	mkdir build
 	cd build
-	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
+	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}" -DBUILD_TEST="${BUILD_TEST_OPTION}" 
 	make
 fi
 
