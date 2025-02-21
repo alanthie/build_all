@@ -116,7 +116,6 @@ install_pkg g++
 install_pkg build-essential
 install_pkg aptitude
 install_pkg ccache
-install_pkg libgmp-dev
 install_pkg libcurl4-gnutls-dev
 install_pkg cmake
 install_pkg git
@@ -139,8 +138,9 @@ then
 fi
 
 # notcurses
+install_pkg libgmp-dev
 install_pkg doctest-dev 
-install_pkg libavdevice-dev 
+#install_pkg libavdevice-dev #-DUSE_MULTIMEDIA=none
 install_pkg libdeflate-dev 
 install_pkg libgpm-dev 
 install_pkg libncurses-dev 
@@ -204,14 +204,14 @@ fi
 if [ -d "${FOLDER}/notcurses/build" ]; then
 	echo "Directory already exist ${FOLDER}/notcurses/build ..."
 	cd "${FOLDER}/notcurses/build"
-	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
+	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}" -DUSE_MULTIMEDIA=none
 	make
 	sudo make install
 else
 	cd "${FOLDER}/notcurses"
 	mkdir build
 	cd build
-	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}"
+	cmake ..  -DCMAKE_BUILD_TYPE="${BUILDTYPE}" -DUSE_MULTIMEDIA=none
 	make
 	# REQUIRE later to find *.h
 	sudo make install
