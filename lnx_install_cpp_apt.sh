@@ -19,8 +19,8 @@
 # -------------------------------------------------------
 
 . /etc/os-release 
-#DISTRO="${ID}_${VERSION_ID}" 
-DISTRO="LinuxLite_7.2" 
+DISTRO="${ID}_${VERSION_ID}" 
+#DISTRO="LinuxLite_7.2" 
 
 # -------------------------------------------------------
 # SET FOLDER where git repository are downloaded
